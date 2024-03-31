@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投稿一覧</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .post-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+        .post-item {
+            margin: 10px;
+            text-align: center;
+            width: 30%; /* 3列に並ぶように幅を設定 */
+        }
+        .post-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .post-details {
+            margin-top: 10px;
+        }
+        .post-title {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+        }
+        .post-delete {
+            padding: 5px 10px;
+            font-size: 14px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .post-delete:hover {
+            background-color: #bd2130;
+        }
+        .button {
+            margin-top: 10px;
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>投稿一覧</h1>
+    <ul class="post-list">
+        {% for post in posts %}
+            <li class="post-item">
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image">
+                <div class="post-details">
+                    <a href="{% url 'post_detail' post.pk %}" class="post-title">{{ post.title }}</a>
+                    <form action="{% url 'post_delete' post.pk %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="削除" class="post-delete">
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'post_create' %}" class="button">新規投稿作成</a>
+    <a href="{% url 'signout' %}" class="button">ログアウト</a>
+    <button class="button" onclick="location.href='/mail/contact/'">お問い合わせページはこちら</button>
+</body>
+</html>

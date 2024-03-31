@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        label, input, textarea {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        /* 追加のスタイル */
+        .button {
+            margin-top: 20px;
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Auth page</h1>
+    {% if user.is_authenticated %}
+    <div>
+        <div>次のユーザーでログインしています: {{ user }}</div>
+        <form action="{% url 'signout' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="ログアウト">
+        </form>
+        <form action="{% url 'post_create' %}" method="get">
+            <input type="submit" value="Postに移動">
+        </form>
+    </div>
+    {% else %}
+    <div>
+        <h2>ユーザ作成</h2>
+        <form action="{% url 'signup' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="ユーザー名">
+            <input type="password" name="password" placeholder="パスワード">
+            <input type="submit" value="ユーザー作成">
+        </form>
+        <h2>ログイン</h2>
+        <form action="{% url 'signin' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="ユーザー名">
+            <input type="password" name="password" placeholder="パスワード">
+            <input type="submit" value="ログイン">
+            {% if login_error %}
+            <p style="color: red;">{{ login_error }}</p>
+            {% endif %}
+        </form>
+    </div>
+    {% endif %}
+    <button class="button" onclick="location.href='/mail/contact/'">お問い合わせページはこちら</button>
+</body>
+</html>
